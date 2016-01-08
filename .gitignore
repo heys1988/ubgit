@@ -140,3 +140,4 @@ docs/_build/
 
 # PyBuilder
 target/
+/webroot/excel2sql/nbproject/private/
