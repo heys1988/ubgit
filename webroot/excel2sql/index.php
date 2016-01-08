@@ -9,10 +9,25 @@ and open the template in the editor.
         <meta charset="UTF-8">
         <!--<meta http-equiv=”refresh” content=”3;url=example.php”>-->
         <title>excel2sql</title>
+        <script type="text/javascript">
+            function validateExcel(){
+                var filename = document.getElementById("xlsfile").value;
+                var ext = filename.substring(filename.length-4, filename.length);
+                if(ext === ".xls"){
+                    return true;
+                }
+                else{
+                    alert("You must select an Excel file(*.xls)!");
+                    document.getElementById("reset1").reset();
+                    return false;
+                }
+            }
+        </script>
     </head>
     <body style="background-color: #cce8cf">
     <center>        
-        <form id="filedetail" name="filedetail" enctype="multipart/form-data">
+        <form id="filedetail" name="filedetail" action="" onsubmit="return validateExcel()"
+              method="post" enctype="multipart/form-data">
             <fieldset>
                 <legend>Shenzhen Giec Electronics Co., Ltd.</legend>
                 <label for="xlsfile">Select excel file(*.xls): </label>
