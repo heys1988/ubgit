@@ -26,7 +26,7 @@ and open the template in the editor.
     </head>
     <body style="background-color: #cce8cf">
     <center>        
-        <form id="filedetail" name="filedetail" action="" onsubmit="return validateExcel()"
+        <form id="filedetail" name="filedetail" action="file_upload.php" onsubmit="return validateExcel()"
               method="post" enctype="multipart/form-data">
             <fieldset>
                 <legend>Shenzhen Giec Electronics Co., Ltd.</legend>

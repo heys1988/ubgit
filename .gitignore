@@ -1,4 +1,6 @@
 #Heys adds ignore files
+*.xls
+*.xlsx
 *~
 phpmyadmin
 
