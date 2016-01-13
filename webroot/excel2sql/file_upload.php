@@ -24,6 +24,8 @@ if ($_FILES["xlsfile"]["type"] == "application/vnd.ms-excel")
             move_uploaded_file($_FILES["xlsfile"]["tmp_name"],
                 "upload/" . $_FILES["xlsfile"]["name"]);
             echo "Stored in: " . "upload/" . $_FILES["xlsfile"]["name"];
+            sleep(3);
+            include 'file_process.php';
         }
     }
 }
