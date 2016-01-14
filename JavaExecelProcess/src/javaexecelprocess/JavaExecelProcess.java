@@ -10,9 +10,15 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFCell;
 
 /**
  *
@@ -27,7 +33,10 @@ public class JavaExecelProcess {
         // TODO code application logic here
         System.out.println("Hello excel process.");
         JavaExecelProcess inst = new JavaExecelProcess();
-        inst.str1 = inst.readExcel("新建 Microsoft Office Excel 工作表.xls");
+//        inst.str1 = inst.readExcel("新建 Microsoft Office Excel 工作表.xls");
+//        inst.isDBFormat();
+        inst.getMySQLConn();
+        inst.closeMySQLConn();
         System.out.println(inst.str1);
     }
     private String str1 = null;
@@ -36,6 +45,57 @@ public class JavaExecelProcess {
 //    private String fileInPath = "/home/jupiter/ubgit/webroot/excel2sql/upload/新建 Microsoft Office Excel 工作表.xls";
     private String fileInPath = "/home/jupiter/ubgit/webroot/excel2sql/upload/";
     private HSSFWorkbook wb = null;
+    private static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
+    private static final String MYSQL_URL = "jdbc:mysql://localhost/heys?characterEncoding=utf8" ;
+    private static final String MYSQL_USER = "root";
+    private static final String MYSQL_PASSWD = "root123";
+    private Connection mysqlConn = null;
+    public void closeMySQLConn(){
+        if(null != mysqlConn){
+            try {
+                mysqlConn.close();
+                System.out.println("mysql db closed.") ;
+            } catch (SQLException ex) {
+                Logger.getLogger(JavaExecelProcess.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    public void getMySQLConn(){
+        try{
+            Class.forName(MYSQL_DRIVER) ;
+            mysqlConn = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWD) ;
+            System.out.println("success...") ;
+        }catch(Exception e){
+            System.out.println("failure!!!") ;
+        }
+    }
+    public boolean isDBFormat(){
+        boolean ret = true;
+        HSSFSheet activeSheet = wb.getSheetAt(0);
+        int iFirstRow = activeSheet.getFirstRowNum();
+        int iLastRow = activeSheet.getLastRowNum();
+        for(int i = iFirstRow; i <= iLastRow; i++){
+            HSSFRow row = activeSheet.getRow(i);
+            int iFirstCol = row.getFirstCellNum();
+            int iLastCol = row.getLastCellNum();
+            for(int j = iFirstCol; j < iLastCol; j++){
+                HSSFCell cell = row.getCell(j);
+                String cessStr = cell.toString();
+                int cellType = cell.getCellType();
+                if(HSSFCell.CELL_TYPE_BLANK == cellType
+                        || HSSFCell.CELL_TYPE_ERROR == cellType){
+                    ret = false;
+                    break;
+                }
+            }
+            
+            if(false == ret){
+                break;
+            }
+        }
+        
+        return ret;
+    }
     public String readExcel(String fileName){
 //        System.out.println("Hello excel process.");
 //        try{

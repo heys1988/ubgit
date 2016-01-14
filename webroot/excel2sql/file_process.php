@@ -1,4 +1,5 @@
 <?php
+session_start();
 header("Content-type: text/html; charset=utf-8");
 require_once("http://localhost:8080/javabridge/java/Java.inc");
 //require_once("../javabridge/META-INF/java/Java.inc");
@@ -21,7 +22,19 @@ $ret = $excel_prcess->readExcel("新建 Microsoft Office Excel 工作表.xls");
 echo $ret.'<br/>';
 $ret = $excel_prcess->getRows();
 echo $ret.'<br/>';
-$ret = $excel_prcess->getColumns();
+$excelCols = $excel_prcess->getColumns();
 echo $ret.'<br/>';
+$ret = $excel_prcess->isDBFormat();
+echo $ret.'<br/>';
+
+if(true == $ret){
+//    $_SESSION['excelCols'] = $excelCols;
+    setcookie("excelCols", $excelCols, time()+3600);
+    echo '<script type="text/javascript">';
+    echo 'document.location="create_db_tbl.php"';
+    echo '</script>';
+}
+
+echo 'the end.';
 echo '</center>';
 ?> 
