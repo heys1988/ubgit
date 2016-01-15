@@ -6,31 +6,50 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <title>TODO supply a title</title>
+        <title>Create DB table</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body{
+                background-color:#cce8cf;
+                text-align:center;
+            }
+            #dbprams{
+                text-align: right;
+                width:50%;
+                padding: 10px;
+                
+                /*border: 1px solid black;*/
+            }
+            .fieldset1{
+                text-align:left;
+            }
+        </style>
     </head>
-    <body bgcolor = "#cce8cf">
-    <center>
-        
-        <div>TODO write content</div>
-       <?php
-//            session_start();
-//            echo $_SESSION['excelCols'];
-            echo $_COOKIE["excelCols"];
-            echo 'nothing';
-        ?>
-        
-        <form id="dbprams" name="dbprams" action="" onsubmit="return validateNotNull()"
-              method="post">
-            <fieldset>
-                <legend>Shenzhen Giec Electronics Co., Ltd. Database definition</legend>
-                <label for="xlsfile">Select excel file(*.xls): </label>
-                <input type="text" id="fields[]" name="fields[]" ></input><br />
+    <body>
+    <!--<center>-->
+        <fieldset id="fieldset1" class="fieldset1">
+            <legend>Shenzhen Giec Electronics Co., Ltd. Database definition</legend>
+        <form id="dbprams" name="dbprams" action="" onsubmit=""
+              method="post" >
+            <!--<input type="text" id="xlsfile" name="xlsfile" value="xlsfile"--> 
+                   <!--autofocus="true" onfocus="this.select()"></input><br />-->
+                <?php
+                    echo "<label for=\"tblname\">table name: </label>";
+                    echo "<input type=\"text\" id=\"tblname\" name=\"tblname\" value=\"tblname\" "
+                    . "autofocus=\"true\" onfocus=\"this.select()\"/><br />";
+                    for($i = 1; $i <= $_COOKIE["excelCols"]; $i++){
+                        echo "<label for=\"field$i\">field$i: </label>";
+                        echo "<input type=\"text\" id=\"field$i\" name=\"field$i\" value=\"field$i\" "
+                                . "onfocus=\"this.select()\"/><br />";
+ 
+                    }
+                ?>
                 <input type="submit" id="submit1" name="submit1" value="Submit" />
                 <input type="reset" id="reset1" name="reset1" value="Reset" />
-                </fieldset>
+                
         </form>
-    </center>        
+        </fieldset>
+    <!--</center>-->        
     </body>
 </html>

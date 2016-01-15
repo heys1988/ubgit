@@ -18,7 +18,7 @@ for($i=0; $i<$n; $i++) {
 $str = new java("java.lang.String", $s);
 echo '<br/>'.$str.'<br/>';
 $excel_prcess = new java("javaexecelprocess.JavaExecelProcess");
-$ret = $excel_prcess->readExcel("新建 Microsoft Office Excel 工作表.xls");
+$ret = $excel_prcess->readExcel("邮箱地址.xls");
 echo $ret.'<br/>';
 $ret = $excel_prcess->getRows();
 echo $ret.'<br/>';
