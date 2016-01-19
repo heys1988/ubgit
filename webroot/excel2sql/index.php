@@ -6,8 +6,8 @@ and open the template in the editor.
 -->
 <html>
     <head>
-        <!--<meta charset="UTF-8">-->
-        <meta http-equiv="refresh" content="1;url=file_process.php">
+        <meta charset="UTF-8">
+        <!--<meta http-equiv="refresh" content="1;url=file_process.php">-->
         <title>excel2sql</title>
         <script type="text/javascript">
             function validateExcel(){

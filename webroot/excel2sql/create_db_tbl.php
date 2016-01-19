@@ -30,7 +30,7 @@ and open the template in the editor.
     <!--<center>-->
         <fieldset id="fieldset1" class="fieldset1">
             <legend>Shenzhen Giec Electronics Co., Ltd. Database definition</legend>
-        <form id="dbprams" name="dbprams" action="" onsubmit=""
+            <form id="dbprams" name="dbprams" action="create_table.php" onsubmit=""
               method="post" >
             <!--<input type="text" id="xlsfile" name="xlsfile" value="xlsfile"--> 
                    <!--autofocus="true" onfocus="this.select()"></input><br />-->
@@ -44,6 +44,9 @@ and open the template in the editor.
                                 . "onfocus=\"this.select()\"/><br />";
  
                     }
+//                    echo getcwd() . "<br/>"; 
+                    
+                    
                 ?>
                 <input type="submit" id="submit1" name="submit1" value="Submit" />
                 <input type="reset" id="reset1" name="reset1" value="Reset" />

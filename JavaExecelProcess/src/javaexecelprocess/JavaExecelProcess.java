@@ -11,6 +11,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -18,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -40,15 +43,19 @@ public class JavaExecelProcess {
 //        inst.isDBFormat();
         inst.initMySQLConn();
         if(null != inst.mysqlConn){
-            inst.str1 = inst.readExcel("邮箱地址.xls");
+//            inst.str1 = inst.readExcel("/home/jupiter/ubgit/webroot/excel2sql/upload/邮箱地址.xls");
+            inst.str1 = inst.readExcel("/home/jupiter/ubgit/webroot/excel2sql/upload/2015中国大学700强2.xls");
             boolean bDB = inst.isDBFormat();
             if(true == bDB){
-                inst.setFields("mytbl1");
-                inst.setFields("myf1");
-                inst.setFields("myf2");
+                inst.setFields("tblname");
+                for(int i = 1; i <= 9; i++){
+                    inst.setFields("field"+i);
+                }
+                
                 inst.dropTableIfExists();
                 inst.createDB();
                 inst.insertDataFromExcel();
+                System.out.println("the excel is db-table format.");
             }            
         }
         inst.closeMySQLConn();
@@ -215,19 +222,18 @@ public class JavaExecelProcess {
         return ret;
     }
     public String readExcel(String fileName){
-//        System.out.println("Hello excel process.");
-//        try{
-//            fileName = URLEncoder.encode(fileName, "UTF-8");
-//        }catch(UnsupportedEncodingException e){
-//            e.printStackTrace();
-//        }
         
+//        try {
+//            fileName = URLDecoder.decode(fileName, "UTF-8");
+//        } catch (UnsupportedEncodingException ex) {
+//            Logger.getLogger(JavaExecelProcess.class.getName()).log(Level.SEVERE, null, ex);
+//        }
         str1 = "Read "+fileName+" finished!";
-        fileInPath += fileName;
+       
         FileInputStream fisInFile = null;
         
         try {
-            fisInFile = new FileInputStream(fileInPath);
+            fisInFile = new FileInputStream(fileName);
             wb = new HSSFWorkbook(fisInFile);
             fisInFile.close();
         } catch (IOException e1) {
@@ -364,7 +370,7 @@ public class JavaExecelProcess {
        
     }
 
-    private void dropTableIfExists() {
+    public void dropTableIfExists() {
         String sql = "";
         if(null != fields){
             sql += "DROP TABLE IF EXISTS "+fields.get(0)+";";
