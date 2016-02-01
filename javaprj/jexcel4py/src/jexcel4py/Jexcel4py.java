@@ -87,12 +87,19 @@ public class Jexcel4py {
     }
     
     public String getExcelCellValue(int r, int c){
+        try{
+            Sheet rdSheet = wbRead.getSheetAt(0);
+            Row row = rdSheet.getRow(r);
+            Cell rdCell = row.getCell(c);
+        }catch(Exception e){
+            return "";
+        }
         Sheet rdSheet = wbRead.getSheetAt(0);
         Row row = rdSheet.getRow(r);
         Cell rdCell = row.getCell(c);
         String cellValue = "";
         if(null == rdCell){
-            cellValue = " ";
+//            cellValue = "";
         }
         else{
             cellValue = rdCell.getStringCellValue();

@@ -20,7 +20,9 @@ ex_cols = fanyi_app.getCols()
 
 print 'excel rows:', ex_rows
 print 'excel cols:', ex_cols
-
+#starttime = datetime.datetime.now()
+#endtime = datetime.datetime.now()
+#print 'total time elapsed:',(endtime - starttime).minute,Min
 with Browser() as browser:
     # Visit URL
     url = "http://fanyi.baidu.com/#auto/zh/"
@@ -30,23 +32,37 @@ with Browser() as browser:
     field = browser.find_by_id('baidu_translate_input').first
     #field.value = u'hello world\ngood morning'
 
-    #row = 0
-    row = 190
+    row = 0
+    #row = 188
+    #row = 818
     col = ex_cols - 1
     starttime = datetime.datetime.now()
     block_value = '';
     start_row = row
     while row <= ex_rows:
-        
+        start_row = row
+        block_value = ''
         cell_value = fanyi_app.getExcelCellValue(row, col)
-        
-        if " " == cell_value:
-            end_row = row
+        while cell_value == '':
             row = row + 1
-            continue
-        if len(block_value) > 5000:
-            end_row = row - 1
-        field.value = cell_value
+            start_row = row
+            cell_value = fanyi_app.getExcelCellValue(row, col)
+            
+        block_value = block_value + cell_value
+        
+        while True:
+            row = row + 1
+            cell_value = fanyi_app.getExcelCellValue(row, col)
+            if cell_value == '':
+                end_row = row
+                break;
+            if len(block_value) + len(cell_value) >= 5001:
+                end_row = row - 1
+                break;            
+            block_value = block_value + '\n' + cell_value
+        
+        field.value = block_value
+                
         pinyin=browser.find_by_xpath('//*[@id="main-outer"]/div/\
 div/div/div[2]/div[2]/div/div/div/div[1]/div[2]/div[2]/a[1]')
         if False == pinyin.is_empty():
@@ -62,18 +78,25 @@ div/div/div[2]/div[2]/div/div/div/div[1]/div[2]/div[2]/a[1]')
                     break
     
         trans_output = browser.find_by_css('.ordinary-output.target-output')        
-        fanyi_app.setExcelCellValue(row, col+1, trans_output.value)    
-        
+        #fanyi_app.setExcelCellValue(row, col+1, trans_output.value)
+
+        row = start_row
         for trans_ele in trans_output:
+            fanyi_app.setExcelCellValue(row, col+1, trans_ele.value)
+            row = row + 1
             print trans_ele.value
 
-        row = row + 1
-        if 0 == row % 10:
-            endtime = datetime.datetime.now()
-            print 'time elapsed:'(endtime - starttime).seconds
+        row = end_row + 1
+        #row = row + 1
+        #if 0 == row % 10:
+        #    endtime = datetime.datetime.now()
+        #    print 'time elapsed:'(endtime - starttime).seconds
+        
         qingkong = browser.find_by_css('.textarea-clear-btn')
-        qingkong.click()
+        qingkong.click()        
         fanyi_app.processEnd()
+        
+        endtime = datetime.datetime.now()
+        print 'time elapsed:',(endtime - starttime).seconds, 'Sec'
 
 #fanyi_app.processEnd()
-print 'total time elapsed:'(endtime - starttime).minutes
